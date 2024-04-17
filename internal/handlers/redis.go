@@ -4,6 +4,6 @@ import(
 	"net/http"
 )
 
-func NewRedisHandler() http.Handler {
+func RedisHandler(w http.ResponseWriter, req *http.Request) {
 	
 }

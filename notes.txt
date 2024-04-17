@@ -1,0 +1,1 @@
+"github.com/joho/godotenv" - для использования переменных из енв, godotenv.Load()

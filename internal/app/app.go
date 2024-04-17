@@ -3,13 +3,11 @@ package app
 import (
 	"net/http"
 	"time"
-	"log/slog"
-	
+	"log"
+	"github.com/behummble/temporary_pass/internal/handlers"
+	"github.com/behumble/temprorary_pass/internal/service"
 )
 
-var (
-	log *slog.Logger
-)
 
 func Run() {
 	initLog()
@@ -28,17 +26,17 @@ func startHandlers() {
 		ReadTimeout: 10 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
-
+	log.Fatal(server.ListenAndServe())
 }
 
 func startTokenValidationProccess() {
-
+	
 }
 
 func initLog() {
-	log = slog.New()
+//	log = log.New(os.Stdout, "TEMP_PASS", 1)
 }
 
 func fillHandlers(mux *http.ServeMux) {
-	mux.HandleFunc("/", )
+	mux.HandleFunc("/", handlers.RedisHandler)
 }

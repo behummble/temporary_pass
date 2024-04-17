@@ -5,4 +5,6 @@ type CookieRedis struct {
 	Token string
 }
 
-type
+type TempPassMessage struct {
+	
+}
