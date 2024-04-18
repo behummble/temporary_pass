@@ -5,7 +5,9 @@ import (
 	"time"
 	"log"
 	"github.com/behummble/temporary_pass/internal/handlers"
-	"github.com/behumble/temprorary_pass/internal/service"
+	"github.com/behummble/temporary_pass/internal/service"
+	"github.com/behummble/temporary_pass/internal/external_service/office_service/teorema"
+	"github.com/behummble/temporary_pass/internal/external_service/office_service"
 )
 
 
@@ -30,7 +32,9 @@ func startHandlers() {
 }
 
 func startTokenValidationProccess() {
-	
+	cookies := make([]officeservice.CookieOffice, 0)
+	cookies = append(cookies, teorema.CookieTeorema{})
+	service.StartTokenValidationProccess(cookies)
 }
 
 func initLog() {

@@ -6,5 +6,8 @@ type TemproraryPassOffice interface {
 }
 
 type CookieOffice interface {
-	ValidateToken()
+	DefineCurrentToken()
+	TokenIsValid() bool
+	RefreshToken()
+	GetCurrentToken() string
 }
