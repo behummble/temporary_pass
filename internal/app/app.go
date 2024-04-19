@@ -1,46 +1,45 @@
 package app
 
 import (
-	"net/http"
-	"time"
 	"log"
-	"github.com/behummble/temporary_pass/internal/handlers"
 	"github.com/behummble/temporary_pass/internal/service"
 	"github.com/behummble/temporary_pass/internal/external_service/office_service/teorema"
 	"github.com/behummble/temporary_pass/internal/external_service/office_service"
+	"github.com/behummble/temporary_pass/internal/external_service/db/redis"
+	"github.com/joho/godotenv"
 )
 
 
 func Run() {
 	initLog()
-	startHandlers()
+	initEnv()
+	startListenQueue()
 	go startTokenValidationProccess()
 }
 
-func startHandlers() {
-
-	mux := http.NewServeMux()
-	
-	fillHandlers(mux)
-	
-	server := &http.Server{
-		Addr: "localhost:8080",
-		ReadTimeout: 10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-	}
-	log.Fatal(server.ListenAndServe())
-}
 
 func startTokenValidationProccess() {
-	cookies := make([]officeservice.CookieOffice, 0)
-	cookies = append(cookies, teorema.CookieTeorema{})
-	service.StartTokenValidationProccess(cookies)
+	service.StartTokenValidationProccess(getOffices())
 }
 
 func initLog() {
 //	log = log.New(os.Stdout, "TEMP_PASS", 1)
 }
 
-func fillHandlers(mux *http.ServeMux) {
-	mux.HandleFunc("/", handlers.RedisHandler)
+func startListenQueue() {
+	redis := redis.Connect()
+	service.ListenUserMessagesFromDB(redis)
+}
+
+func initEnv() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+}
+
+func getOffices() []officeservice.Office {
+	offices := make([]officeservice.Office, 0)
+	offices = append(offices, teorema.GetOffice())
+	return offices
 }

@@ -1,13 +1,12 @@
 package officeservice
 
 
-type TemproraryPassOffice interface {
-	RequestPass()
-}
-
-type CookieOffice interface {
-	DefineCurrentToken()
+type Office interface {
 	TokenIsValid() bool
 	RefreshToken()
-	GetCurrentToken() string
+	RequestPass(user User)
+}
+
+type User interface {
+	
 }
