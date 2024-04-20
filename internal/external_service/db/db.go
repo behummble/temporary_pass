@@ -1,20 +1,17 @@
 package db
 
-import(
-	"github.com/behummble/temporary_pass/internal/external_service/office_service"
-)
-
 
 type DB interface {
-	GetCookie() Cookie
-	GetMessages(chan<- UserMessage)
+	GetCookie() (Cookie, error)
+	GetMessages(chan<- UserMessage, string)
+	SetCookie(string)
 }
 
 type UserMessage interface {
 	JsonString() string
-	GetOffice() officeservice.Office
 	GetUserName() string
 	GetPhoneNumber() string
+	GetOfficeName() string
 }
 
 type Cookie interface {

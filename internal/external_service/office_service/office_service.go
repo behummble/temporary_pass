@@ -8,5 +8,6 @@ type Office interface {
 }
 
 type User interface {
-	
+	GetPhoneNumber() string
+	GetFullName() string
 }

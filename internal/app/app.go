@@ -13,8 +13,8 @@ import (
 func Run() {
 	initLog()
 	initEnv()
-	startListenQueue()
 	go startTokenValidationProccess()
+	startListenQueue()
 }
 
 
@@ -27,8 +27,9 @@ func initLog() {
 }
 
 func startListenQueue() {
-	redis := redis.Connect()
-	service.ListenUserMessagesFromDB(redis)
+	redis := redis.NewClient()
+	queues := getMessagesQueues()
+	service.ListenUserMessagesFromDB(redis, queues)
 }
 
 func initEnv() {
@@ -42,4 +43,10 @@ func getOffices() []officeservice.Office {
 	offices := make([]officeservice.Office, 0)
 	offices = append(offices, teorema.GetOffice())
 	return offices
+}
+
+func getMessagesQueues() []string {
+	queues := make([]string,0)
+	queues = append(queues, "WINTER_OFFICE")
+	return queues
 }
